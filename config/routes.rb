@@ -12,15 +12,16 @@ Spree::Core::Engine.routes.prepend do
   resources :users, :only => [:edit, :update]
 
   devise_scope :user do
-    get '/login' => 'user_sessions#new', :as => :login
-    get '/logout' => 'user_sessions#destroy', :as => :logout
-    get '/signup' => 'user_registrations#new', :as => :signup
+    get '/login' => 'user_sessions#new'
+    get '/logout' => 'user_sessions#destroy'
+    get '/signup' => 'user_registrations#new'
   end
 
-  match '/checkout/registration' => 'checkout#registration', :via => :get, :as => :checkout_registration
-  match '/checkout/registration' => 'checkout#update_registration', :via => :put, :as => :update_checkout_registration
-
-  match '/orders/:id/token/:token' => 'orders#show', :via => :get, :as => :token_order
+  get '/checkout/registration' => 'checkout#registration'
+  # Moved out from gem to App repo to use route_translator
+  # due to defining two routes with the same name using :as option error in Rails 4
+  # put '/checkout/registration' => 'checkout#update_registration', as: :update_checkout_registration
+  # get '/orders/:id/token/:token' => 'orders#show', as: :token_order
 
   resource :session do
     member do
